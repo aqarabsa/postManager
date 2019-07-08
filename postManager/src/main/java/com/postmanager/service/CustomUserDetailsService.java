@@ -19,7 +19,8 @@ public class CustomUserDetailsService implements UserDetailsService {
     }
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        System.out.println("Trying to pick user "+username);
         return this.users.findByUsername(username)
-            .orElseThrow(() -> new UsernameNotFoundException("Username: " + username + " not found"));
+            .orElseThrow(() -> new UsernameNotFoundException("Error! Username: " + username + " not found"));
     }
 }

@@ -48,6 +48,7 @@ public class AuthenticationRestController {
             model.put("token", token);
             return ok(model);
         } catch (AuthenticationException e) {
+            System.out.println(e.getMessage());
             throw new BadCredentialsException("Invalid username/password supplied");
         }
     }

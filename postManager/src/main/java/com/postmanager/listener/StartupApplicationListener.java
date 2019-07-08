@@ -9,6 +9,7 @@ import com.postmanager.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.ContextRefreshedEvent;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -27,16 +28,17 @@ public class StartupApplicationListener  implements
 
     @Override
     public void onApplicationEvent(ContextRefreshedEvent event) {
-    		
+
+            CharSequence passwd = "N0passwd";
     		UserEntity user1 = new UserEntity();
     		user1.setUsername("user1");
-    		user1.setPassword("user1");
+    		user1.setPassword( new BCryptPasswordEncoder().encode(passwd));
     		user1.getRoles().add("USER");
     		user1 = this.userRepository.save(user1);
     		
     		UserEntity user2 = new UserEntity();
     		user2.setUsername("user2");
-    		user2.setPassword("user2");
+    		user2.setPassword(new BCryptPasswordEncoder().encode(passwd));
     		user2.getRoles().add("USER");
     		user2 = this.userRepository.save(user2);
     	
