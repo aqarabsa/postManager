@@ -15,14 +15,19 @@ import java.util.UUID;
 @NoArgsConstructor
 public class PostEntity {
 
-    public PostEntity(String title, String content) {
+    public PostEntity(String title, String content, UserEntity user) {
         this.title = title;
         this.content = content;
+        this.user = user;
     }
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "ID")
     private UUID id;
+    
+    @OneToOne
+    @JoinColumn(name="POST_USER")
+    private UserEntity user;
 
     @Column(name = "TITLE")
     private String title;

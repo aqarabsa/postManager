@@ -13,14 +13,19 @@ import java.util.UUID;
 @NoArgsConstructor
 public class CommentEntity {
 
-    public CommentEntity(String content, PostEntity post) {
+    public CommentEntity(String content, PostEntity post, UserEntity user) {
         this.content = content;
         this.post = post;
+        this.user = user;
     }
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "ID")
     private UUID id;
+    
+    @OneToOne
+    @JoinColumn(name="COMMENT_USER")
+    private UserEntity user;
 
     @Column(name = "CONTENT")
     private String content;
