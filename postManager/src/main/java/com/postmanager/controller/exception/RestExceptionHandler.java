@@ -23,10 +23,10 @@ public class RestExceptionHandler {
 		return new ResponseEntity<String>(ex.getMessage(), HttpStatus.UNAUTHORIZED);
 	}
 	
-    @ExceptionHandler(value = {InvalidJwtAuthenticationException.class})
+    @ExceptionHandler(InvalidJwtAuthenticationException.class)
     @ResponseBody
 	@ResponseStatus(code = HttpStatus.UNAUTHORIZED)
-    public ResponseEntity<String> invalidJwtAuthentication(InvalidJwtAuthenticationException ex, WebRequest request) {
+    public ResponseEntity<String> invalidJwtAuthentication(Exception ex) {
         log.debug("handling InvalidJwtAuthenticationException...");
         return new ResponseEntity<String>(ex.getMessage(), HttpStatus.UNAUTHORIZED);
     }
@@ -34,8 +34,24 @@ public class RestExceptionHandler {
     @ExceptionHandler(BadCredentialsException.class)
     @ResponseBody
 	@ResponseStatus(code = HttpStatus.UNAUTHORIZED)
-    public ResponseEntity<String> handlesBadCredendialsException(Exception ex, WebRequest request) {
+    public ResponseEntity<String> handlesBadCredendialsException(Exception ex) {
         log.debug("handling InvalidJwtAuthenticationException...");
+        return new ResponseEntity<String>(ex.getMessage(), HttpStatus.UNAUTHORIZED);
+    }
+
+    @ExceptionHandler(ObjectNotExistException.class)
+    @ResponseBody
+    @ResponseStatus(code = HttpStatus.UNAUTHORIZED)
+    public ResponseEntity<String> handlesObjectNotFoundException(Exception ex) {
+        log.debug("handling ObjectNotExistException...");
+        return new ResponseEntity<String>(ex.getMessage(), HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler(UnauthorizedAccessException.class)
+    @ResponseBody
+    @ResponseStatus(code = HttpStatus.UNAUTHORIZED)
+    public ResponseEntity<String> handleUnauthorizedAccessException(Exception ex) {
+        log.debug("handling UnauthorizedAccessException...");
         return new ResponseEntity<String>(ex.getMessage(), HttpStatus.UNAUTHORIZED);
     }
 }
