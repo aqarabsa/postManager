@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.postmanager.model.dto.AuthenticationRequestDto;
-import com.postmanager.repository.UserRepository;
+import com.postmanager.repository.jpa.UserRepository;
 import com.postmanager.util.JwtTokenProvider;
 
 import java.util.HashMap;

@@ -5,6 +5,7 @@ import com.postmanager.model.dto.PostDto;
 import com.postmanager.model.entity.CommentEntity;
 import com.postmanager.model.entity.PostEntity;
 import com.postmanager.service.PostService;
+import com.postmanager.util.JwtTokenProvider;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -24,22 +25,37 @@ public class InSecurePostController {
 
     protected ModelMapper modelMapper;
 
+    protected JwtTokenProvider jwtTokenProvider;
+
     @Autowired
-    public InSecurePostController(PostService postService, ModelMapper modelMapper) {
+    public InSecurePostController(PostService postService, ModelMapper modelMapper, JwtTokenProvider jwtTokenProvider) {
         this.postService = postService;
         this.modelMapper = modelMapper;
+        this.jwtTokenProvider = jwtTokenProvider;
     }
 
     @GetMapping(path="/all")
-    public ResponseEntity<List<PostDto>> getAllPosts() {
+    public ResponseEntity<List<PostDto>> getAllPosts( HttpServletRequest request) {
+        this.jwtTokenProvider.getUsername(request.getHeader("Authorization"));
         return ResponseEntity.ok(this.postService.getAllPosts().stream().map(p->this.modelMapper.map(p, PostDto.class)).collect(Collectors.toList()));
 
     }
 
     @GetMapping(path="/own")
-    public ResponseEntity<List<PostDto>> getOwnPosts() {
-        return ResponseEntity.ok(this.postService.getOwnPosts().stream().map(p->this.modelMapper.map(p, PostDto.class)).collect(Collectors.toList()));
+    public ResponseEntity<List<PostDto>> getOwnPosts(HttpServletRequest request) {
+        return ResponseEntity.ok(this.postService.getOwnPosts(this.jwtTokenProvider.getUsername(request.getHeader("Authorization"))).stream().map(p->this.modelMapper.map(p, PostDto.class)).collect(Collectors.toList()));
 
+    }
+
+    @GetMapping(path="/title/{title}")
+    public ResponseEntity<List<PostDto>> getPostsByttile(@PathVariable("title") String title, HttpServletRequest request) {
+        return ResponseEntity.ok(this.postService.getPostsBytitleInSecure(title).stream().map(p->this.modelMapper.map(p, PostDto.class)).collect(Collectors.toList()));
+
+    }
+
+    @PostMapping
+    public ResponseEntity<PostDto> createPost( @RequestBody PostDto post, HttpServletRequest request) {
+        return ResponseEntity.ok(this.modelMapper.map(this.postService.createPostInSecure( this.modelMapper.map(post, PostEntity.class), this.jwtTokenProvider.getUsername(request.getHeader("Authorization"))), PostDto.class));
     }
 
     @PutMapping(path= "/{postId}/comment")

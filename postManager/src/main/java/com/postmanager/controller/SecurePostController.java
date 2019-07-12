@@ -3,6 +3,7 @@ package com.postmanager.controller;
 import com.postmanager.model.dto.CommentDto;
 import com.postmanager.model.dto.PostDto;
 import com.postmanager.model.entity.CommentEntity;
+import com.postmanager.model.entity.PostEntity;
 import com.postmanager.service.PostService;
 import com.postmanager.util.JwtTokenProvider;
 import org.modelmapper.ModelMapper;
@@ -20,11 +21,20 @@ import java.util.stream.Collectors;
 @RequestMapping(path="/api/secure/posts")
 public class SecurePostController extends InSecurePostController{
 
-    @Autowired
-    protected JwtTokenProvider jwtTokenProvider;
 
-    public SecurePostController(PostService postService, ModelMapper modelMapper) {
-       super(postService, modelMapper);
+    public SecurePostController(PostService postService, ModelMapper modelMapper, JwtTokenProvider jwtTokenProvider) {
+       super(postService, modelMapper, jwtTokenProvider);
+    }
+
+    @Override
+    public ResponseEntity<List<PostDto>> getPostsByttile(@PathVariable("title") String title, HttpServletRequest request) {
+        return ResponseEntity.ok(this.postService.getPostsBytitleSecure(title).stream().map(p->this.modelMapper.map(p, PostDto.class)).collect(Collectors.toList()));
+
+    }
+
+    @Override
+    public ResponseEntity<PostDto> createPost( @RequestBody PostDto post, HttpServletRequest request) {
+        return ResponseEntity.ok(this.modelMapper.map(this.postService.createPostSecure( this.modelMapper.map(post, PostEntity.class), this.jwtTokenProvider.getUsername(request.getHeader("Authorization"))), PostDto.class));
     }
 
     @Override

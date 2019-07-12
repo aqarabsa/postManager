@@ -1,4 +1,4 @@
-package com.postmanager.repository;
+package com.postmanager.repository.jpa;
 
 import java.util.Optional;
 import java.util.UUID;

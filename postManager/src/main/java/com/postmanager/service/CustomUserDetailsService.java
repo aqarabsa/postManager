@@ -2,8 +2,7 @@ package com.postmanager.service;
 
 import org.springframework.stereotype.Component;
 
-import com.postmanager.model.entity.UserEntity;
-import com.postmanager.repository.UserRepository;
+import com.postmanager.repository.jpa.UserRepository;
 
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;

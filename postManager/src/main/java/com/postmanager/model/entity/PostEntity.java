@@ -15,10 +15,11 @@ import java.util.UUID;
 @NoArgsConstructor
 public class PostEntity {
 
-    public PostEntity(String title, String content, UserEntity user) {
+    public PostEntity(String title, String content, UserEntity user, boolean visible) {
         this.title = title;
         this.content = content;
         this.user = user;
+        this.visible = visible;
     }
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -34,6 +35,9 @@ public class PostEntity {
 
     @Column(name = "CONTENT", length = 2000)
     private String content;
+
+    @Column(name="VISIBLE")
+    private boolean visible = true;
 
     @OneToMany(mappedBy = "post",cascade = CascadeType.ALL)
     private List<CommentEntity> commentList = new ArrayList<>();

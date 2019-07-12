@@ -23,5 +23,7 @@ public class PostDto {
     @NotNull(message = "Content is required")
     private String content;
 
+    private boolean visible = true;
+
     private List<CommentDto> commentList;
 }
