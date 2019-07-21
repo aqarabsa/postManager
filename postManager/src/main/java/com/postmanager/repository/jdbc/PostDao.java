@@ -34,16 +34,8 @@ public class PostDao {
                 "SELECT id, title, content, visible FROM post where visible = true and title = ? ", new Object[] {  title },
                 (rs, rowNum) -> {
                     String id = rs.getString("id");
-//                    for(int i=0,j=0; i-j < id.length(); i++) {
-//                        if(i -j %3 ==0) {
-//                            String firstChunk = id.substring(0,i+j);
-//                            System.out.println("first chunk = "+firstChunk);
-//                            String secondChunk = id.substring(i+j+1);
-//                            System.out.println("second chunk = "+secondChunk);
-//                            id = firstChunk +"-"+secondChunk;
-//                            j++;
-//                        }
-//                    }
+//
+
                    PostEntity postEntity = new PostEntity(UUID.randomUUID(), null, rs.getString("title"), rs.getString("content"), true, null);
                     return postEntity;
                 }).forEach(p -> resultList.add(p));
