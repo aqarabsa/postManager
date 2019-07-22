@@ -32,10 +32,7 @@ public class SecurePostController extends InSecurePostController{
 
     }
 
-    @Override
-    public ResponseEntity<PostDto> createPost( @RequestBody PostDto post, HttpServletRequest request) {
-        return ResponseEntity.ok(this.modelMapper.map(this.postService.createPostSecure( this.modelMapper.map(post, PostEntity.class), this.jwtTokenProvider.getUsername(request.getHeader("Authorization"))), PostDto.class));
-    }
+
 
     @Override
     public ResponseEntity<PostDto> editPost(@PathVariable("postId")UUID postId, @RequestBody PostDto post, HttpServletRequest request) {

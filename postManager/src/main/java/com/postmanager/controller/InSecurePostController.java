@@ -55,7 +55,7 @@ public class InSecurePostController {
 
     @PostMapping
     public ResponseEntity<PostDto> createPost( @RequestBody PostDto post, HttpServletRequest request) {
-        return ResponseEntity.ok(this.modelMapper.map(this.postService.createPostInSecure( this.modelMapper.map(post, PostEntity.class), this.jwtTokenProvider.getUsername(request.getHeader("Authorization"))), PostDto.class));
+        return ResponseEntity.ok(this.modelMapper.map(this.postService.createPostSecure( this.modelMapper.map(post, PostEntity.class), this.jwtTokenProvider.getUsername(request.getHeader("Authorization"))), PostDto.class));
     }
 
     @PutMapping(path= "/{postId}/comment")
