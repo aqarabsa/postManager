@@ -59,9 +59,11 @@ public class AuthenticationRestController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<String> createUser(@RequestBody AuthenticationRequestDto data)  {
+    public ResponseEntity<AuthenticationRequestDto> createUser(@RequestBody AuthenticationRequestDto data)  {
         this.userDetailsService.createUser(data.getUsername(), data.getPassword());
-        return new ResponseEntity<String>("success", HttpStatus.CREATED);
+        AuthenticationRequestDto response = new AuthenticationRequestDto();
+        response.setUsername(data.getUsername());
+        return new ResponseEntity<>(response, HttpStatus.CREATED);
     }
 
 	
