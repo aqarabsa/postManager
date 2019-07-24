@@ -1,7 +1,9 @@
 package com.postmanager.controller;
 
 
+import com.postmanager.service.CustomUserDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -35,6 +37,9 @@ public class AuthenticationRestController {
     @Autowired
     UserRepository users;
 
+    @Autowired
+    CustomUserDetailsService userDetailsService;
+
     @PostMapping("/signin")
     public ResponseEntity signin(@RequestBody AuthenticationRequestDto data) {
 
@@ -53,7 +58,11 @@ public class AuthenticationRestController {
         }
     }
 
-//    @PostMapping("/register")
-//    public Re
+    @PostMapping("/register")
+    public ResponseEntity<String> createUser(@RequestBody AuthenticationRequestDto data)  {
+        this.userDetailsService.createUser(data.getUsername(), data.getPassword());
+        return new ResponseEntity<String>("success", HttpStatus.CREATED);
+    }
+
 	
 }

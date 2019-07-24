@@ -54,4 +54,13 @@ public class RestExceptionHandler {
         log.debug("handling UnauthorizedAccessException...");
         return new ResponseEntity<String>(ex.getMessage(), HttpStatus.UNAUTHORIZED);
     }
+
+    @ExceptionHandler(UserNameAlreadyExistsException.class)
+    @ResponseBody
+    @ResponseStatus(code = HttpStatus.UNAUTHORIZED)
+    public ResponseEntity<String> handlUserNameAlreadyExistsException(Exception ex) {
+        log.debug("handling UserNameAlreadyExistsException...");
+        return new ResponseEntity<String>(ex.getMessage(), HttpStatus.CONFLICT);
+    }
+
 }
