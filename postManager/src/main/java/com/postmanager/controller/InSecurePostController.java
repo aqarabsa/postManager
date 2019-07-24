@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
@@ -47,9 +48,10 @@ public class InSecurePostController {
 
     }
 
-    @GetMapping(path="/title/{title}")
-    public ResponseEntity<List<PostDto>> getPostsByttile(@PathVariable("title") String title, HttpServletRequest request) {
-        return ResponseEntity.ok(this.postService.getPostsBytitleInSecure(title).stream().map(p->this.modelMapper.map(p, PostDto.class)).collect(Collectors.toList()));
+    @GetMapping(path={"/title/{title}", "/title"})
+    public ResponseEntity<List<PostDto>> getPostsByttile(@PathVariable("title") Optional<String> title, HttpServletRequest request) {
+
+        return ResponseEntity.ok(this.postService.getPostsBytitleInSecure(title.orElse("")).stream().map(p->this.modelMapper.map(p, PostDto.class)).collect(Collectors.toList()));
 
     }
 
@@ -67,5 +69,11 @@ public class InSecurePostController {
     @Transactional
     public ResponseEntity<PostDto> editPost(@PathVariable("postId")UUID postId, @RequestBody PostDto post, HttpServletRequest request) {
         return ResponseEntity.ok(this.modelMapper.map(this.postService.updatePost(postId, this.modelMapper.map(post, PostEntity.class)), PostDto.class));
+    }
+
+    @DeleteMapping(path="/{postId}")
+    public ResponseEntity<String> deletePost(@PathVariable("postId")UUID postId, HttpServletRequest request) {
+        this.postService.deletePost(postId);
+        return ResponseEntity.ok("success");
     }
 }

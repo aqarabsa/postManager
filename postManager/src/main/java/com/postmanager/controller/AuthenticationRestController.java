@@ -52,5 +52,8 @@ public class AuthenticationRestController {
             throw new BadCredentialsException("Invalid username/password supplied");
         }
     }
+
+//    @PostMapping("/register")
+//    public Re
 	
 }

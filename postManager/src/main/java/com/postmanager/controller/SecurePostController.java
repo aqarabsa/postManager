@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
@@ -27,12 +28,10 @@ public class SecurePostController extends InSecurePostController{
     }
 
     @Override
-    public ResponseEntity<List<PostDto>> getPostsByttile(@PathVariable("title") String title, HttpServletRequest request) {
-        return ResponseEntity.ok(this.postService.getPostsBytitleSecure(title).stream().map(p->this.modelMapper.map(p, PostDto.class)).collect(Collectors.toList()));
+    public ResponseEntity<List<PostDto>> getPostsByttile(@PathVariable("title") Optional<String> title, HttpServletRequest request) {
+        return ResponseEntity.ok(this.postService.getPostsBytitleSecure(title.orElse("")).stream().map(p->this.modelMapper.map(p, PostDto.class)).collect(Collectors.toList()));
 
     }
-
-
 
     @Override
     public ResponseEntity<PostDto> editPost(@PathVariable("postId")UUID postId, @RequestBody PostDto post, HttpServletRequest request) {
@@ -42,4 +41,11 @@ public class SecurePostController extends InSecurePostController{
         return super.editPost(postId, post, request);
     }
 
+    @Override
+    public ResponseEntity<String> deletePost(@PathVariable("postId")UUID postId, HttpServletRequest request) {
+        this.postService.verifyExists(postId);
+        this.postService.verifyOwner(postId, this.jwtTokenProvider.getUsername(request.getHeader("Authorization")));
+        this.postService.deletePost(postId);
+        return ResponseEntity.ok("success");
+    }
 }

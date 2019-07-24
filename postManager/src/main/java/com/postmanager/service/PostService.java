@@ -116,4 +116,8 @@ public class PostService {
         return function.apply(postEntity);
     }
 
+    @Transactional
+    public void deletePost(UUID postId) {
+        this.postRepository.deleteById(postId);
+    }
 }
