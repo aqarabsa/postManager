@@ -36,7 +36,7 @@ public class CustomUserDetailsService implements UserDetailsService {
             throw new UserNameAlreadyExistsException();
         }
         UserEntity user1 = new UserEntity();
-        user1.setUsername("user1");
+        user1.setUsername(username);
         user1.setPassword( new BCryptPasswordEncoder().encode(password));
         user1.getRoles().add("USER");
         user1 = this.users.save(user1);
